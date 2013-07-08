@@ -1,7 +1,7 @@
 // ### This module accounts for the main svg document
 
 //
-SVG.Doc = function(element) {
+SVG.Doc = function(id, element) {
   /* ensure the presence of a html element */
   this.parent = typeof element == 'string' ?
     document.getElementById(element) :
@@ -10,7 +10,7 @@ SVG.Doc = function(element) {
   /* If the target is an svg element, use that element as the main wrapper.
      This allows svg.js to work with svg documents as well. */
   this.constructor
-    .call(this, this.parent.nodeName == 'svg' ? this.parent : SVG.create('svg'))
+    .call(this, this.parent.nodeName == 'svg' ? this.parent : SVG.create(id, 'svg'))
   
   /* set svg element attributes */
   this

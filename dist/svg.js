@@ -1,41 +1,30 @@
-/* svg.js v0.26-1-g794f0de - svg regex default color number viewbox bbox rbox element container fx event defs group arrange mask clip gradient use doc shape rect ellipse line poly path plotable image text nested sugar set memory - svgjs.com/license */
+/* svg.js v0.26-2-gf550d96 - svg regex default color number viewbox bbox rbox element container fx event defs group arrange mask clip gradient use doc shape rect ellipse line poly path plotable image text nested sugar set memory - svgjs.com/license */
 ;(function() {
 
-  this.SVG = function(element) {
+  this.SVG = function(id, element) {
     if (SVG.supported)
-      return new SVG.Doc(element)
+      return new SVG.Doc(id, element)
   }
   
   // Default namespaces
   SVG.ns = 'http://www.w3.org/2000/svg'
   SVG.xlink = 'http://www.w3.org/1999/xlink'
   
-  // Next uuid
-  SVG.uuid = null
+  // Element id sequence
+  SVG.did  = 1000
   
   // Get next named element id
   SVG.eid = function(name) {
-    /* make sure uuid has been set */
-    if (SVG.uuid === null) {
-      throw "uuid not set";
-    }
-  
-    /* get user set uuid */
-    var eid = SVG.uuid;
-  
-    /* Reset uuid */
-    SVG.uuid = null;
-  
-    return eid;
+    return 'Svgjs' + name.charAt(0).toUpperCase() + name.slice(1) + (SVG.did++)
   }
   
   // Method for element creation
-  SVG.create = function(name) {
+  SVG.create = function(id, name) {
     /* create element */
     var element = document.createElementNS(this.ns, name)
     
     /* apply unique id */
-    element.setAttribute('id', this.eid(name))
+    element.setAttribute('id', id)
     
     return element
   }
@@ -1778,7 +1767,7 @@
   
   })
 
-  SVG.Doc = function(element) {
+  SVG.Doc = function(id, element) {
     /* ensure the presence of a html element */
     this.parent = typeof element == 'string' ?
       document.getElementById(element) :
@@ -1787,7 +1776,7 @@
     /* If the target is an svg element, use that element as the main wrapper.
        This allows svg.js to work with svg documents as well. */
     this.constructor
-      .call(this, this.parent.nodeName == 'svg' ? this.parent : SVG.create('svg'))
+      .call(this, this.parent.nodeName == 'svg' ? this.parent : SVG.create(id, 'svg'))
     
     /* set svg element attributes */
     this

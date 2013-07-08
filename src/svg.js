@@ -7,41 +7,30 @@
 
 
 // The main wrapping element
-this.SVG = function(element) {
+this.SVG = function(id, element) {
   if (SVG.supported)
-    return new SVG.Doc(element)
+    return new SVG.Doc(id, element)
 }
 
 // Default namespaces
 SVG.ns = 'http://www.w3.org/2000/svg'
 SVG.xlink = 'http://www.w3.org/1999/xlink'
 
-// Next uuid
-SVG.uuid = null
+// Element id sequence
+SVG.did  = 1000
 
 // Get next named element id
 SVG.eid = function(name) {
-  /* make sure uuid has been set */
-  if (SVG.uuid === null) {
-    throw "uuid not set";
-  }
-
-  /* get user set uuid */
-  var eid = SVG.uuid;
-
-  /* Reset uuid */
-  SVG.uuid = null;
-
-  return eid;
+  return 'Svgjs' + name.charAt(0).toUpperCase() + name.slice(1) + (SVG.did++)
 }
 
 // Method for element creation
-SVG.create = function(name) {
+SVG.create = function(id, name) {
   /* create element */
   var element = document.createElementNS(this.ns, name)
   
   /* apply unique id */
-  element.setAttribute('id', this.eid(name))
+  element.setAttribute('id', id)
   
   return element
 }
