@@ -1,4 +1,4 @@
-/* svg.js v0.26 - svg regex default color number viewbox bbox rbox element container fx event defs group arrange mask clip gradient use doc shape rect ellipse line poly path plotable image text nested sugar set memory - svgjs.com/license */
+/* svg.js v0.26-1-g794f0de - svg regex default color number viewbox bbox rbox element container fx event defs group arrange mask clip gradient use doc shape rect ellipse line poly path plotable image text nested sugar set memory - svgjs.com/license */
 ;(function() {
 
   this.SVG = function(element) {
@@ -10,12 +10,23 @@
   SVG.ns = 'http://www.w3.org/2000/svg'
   SVG.xlink = 'http://www.w3.org/1999/xlink'
   
-  // Element id sequence
-  SVG.did  = 1000
+  // Next uuid
+  SVG.uuid = null
   
   // Get next named element id
   SVG.eid = function(name) {
-    return 'Svgjs' + name.charAt(0).toUpperCase() + name.slice(1) + (SVG.did++)
+    /* make sure uuid has been set */
+    if (SVG.uuid === null) {
+      throw "uuid not set";
+    }
+  
+    /* get user set uuid */
+    var eid = SVG.uuid;
+  
+    /* Reset uuid */
+    SVG.uuid = null;
+  
+    return eid;
   }
   
   // Method for element creation
